@@ -81,3 +81,11 @@ self.addEventListener('install',async( event )=>{
     '/favicon.ico'
   ]) //* agregamos Bootstrap , fontawesome y el favicon
 })
+
+
+self.addEventListener('fetch' , ( event ) => {
+
+  console.log(event.request.url);
+
+  
+})
