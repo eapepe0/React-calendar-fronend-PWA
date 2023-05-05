@@ -78,19 +78,24 @@ self.addEventListener('install',async( event )=>{
   await cache.addAll([
     'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css',
-    '/favicon.ico'
+    '/favicon.ico',
+    '/manifest.json'
   ]) //* agregamos Bootstrap , fontawesome y el favicon
 })
 
+const apiOfflineFallbacks = ["http://localhost:4000/api/auth/renew" , "http://localhost:4000/api/events"]
 
 self.addEventListener('fetch' , ( event ) => {
 
   console.log(event.request.url);
 
-  if (event.request.url !== "http://localhost:4000/api/auth/renew") return;
+  if(!apiOfflineFallbacks.includes( event.request.url ) ) return;
 
   const resp = fetch ( event.request ) //* hacemos una solicitud a la url
         .then( response => { //* si responden
+          if(!response){ //* si no hay respuesta
+            return caches.match( event.request ) //* devolvemos lo guardado en el cache
+          }
           caches.open("cache-dynamic").then(cache => { //* crea un cache 
             cache.put(event.request , response) //* para request se usa put ,para lo otro allAdd , guardamos la url de la peticion y la respuesta
           })
