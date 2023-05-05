@@ -87,5 +87,20 @@ self.addEventListener('fetch' , ( event ) => {
 
   console.log(event.request.url);
 
-  
+  if (event.request.url !== "http://localhost:4000/api/auth/renew") return;
+
+  const resp = fetch ( event.request ) //* hacemos una solicitud a la url
+        .then( response => { //* si responden
+          caches.open("cache-dynamic").then(cache => { //* crea un cache 
+            cache.put(event.request , response) //* para request se usa put ,para lo otro allAdd , guardamos la url de la peticion y la respuesta
+          })
+          
+          return response.clone(); //* devolvemos a la const resp un clon de la respuesta
+        })
+        .catch(err => { //* si hay algun error en el fetch
+          console.log('offline response'); //* mostramos que estamos trabajando de forma offline
+          return caches.match(event.request) //* devolvemos una respuesta almacenada en el cache
+        })
+        event.respondWith ( resp ) //* devuelve la respuesta de red original o la almacenada en el cache
+
 })
