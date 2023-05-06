@@ -39,30 +39,6 @@ registerRoute(
     new CacheFirst()
 )
 
-
-/* //* cargamos bootstap del cache
-registerRoute(
-    new RegExp("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"),
-    new CacheFirst()
-)
-
-//* cargamos el font-awesome del cache
-registerRoute(
-    new RegExp("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"),
-    new CacheFirst()
-) */
-/* 
-//* primero de la red, despues del cache renovamos el token
-registerRoute(
-    new RegExp("http://localhost:4000/api/auth/renew"),
-    new NetworkFirst()
-)
-//* primero de la red,guardamos en el cache, si no tenemos red , recurrimos al cache
-registerRoute(
-    new RegExp("http://localhost:4000/api/events"),
-    new NetworkFirst()
-)
- */
 // Posteos Offline 
 
 const bgSyncPlugin = new BackgroundSyncPlugin('cola-offline', {
